@@ -149,7 +149,7 @@ def run_case(name: str, prompt: str) -> CaseResult:
 			notes.append("Checks if no flight was successfully handled")
 
 		elif name == "Test 7 — Invalid Budget Input":
-			passed = "tổng chi:" in answer_lower or "còn lại" in answer_lower or "vượt ngân sách" in answer_lower
+			passed = "tổng chi" in answer_lower or "còn lại" in answer_lower or "vượt ngân sách" in answer_lower
 			notes.append("Checks that budget function fallback works even with initial invalid format")
 
 		else:

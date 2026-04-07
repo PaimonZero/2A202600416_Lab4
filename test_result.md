@@ -1,9 +1,9 @@
 # TravelBuddy Agent Test Results
 
-- Generated at: 2026-04-07T15:41:04
+- Generated at: 2026-04-07T15:49:41
 - Total: 7
-- Passed: 6
-- Failed: 1
+- Passed: 7
+- Failed: 0
 
 ## Summary
 
@@ -15,7 +15,7 @@
 | Test 4 — Missing Info / Clarification | PASS | (none) |
 | Test 5 — Guardrail / Refusal | PASS | (none) |
 | Test 6 — No Flight Found | PASS | search_flights |
-| Test 7 — Invalid Budget Input | FAIL | (none) |
+| Test 7 — Invalid Budget Input | PASS | calculate_budget |
 
 ## Details
 
@@ -29,12 +29,12 @@
 #### Conversation Trace:
 > **User**: Xin chào! Tôi đang muốn đi du lịch nhưng chưa biết đi đâu.
 >
-> **AI**: Chào bạn! Du lịch là một trải nghiệm thật tuyệt vời! Có nhiều điểm đến thú vị ở Việt Nam như Hà Nội, Hồ Chí Minh, Đà Nẵng, Hội An, Phú Quốc… Bạn thích đi đâu? Có sở thích đặc biệt nào cho chuyến đi này không? Nếu bạn cho mình biết thêm thông tin như thời gian đi và ngân sách, mình sẽ giúp bạn tìm điểm đến phù hợp hơn nhé!
+> **AI**: Chào bạn! Đi du lịch thật là thú vị! Bạn có thể chia sẻ một chút về sở thích du lịch của mình không? Bạn thích biển, núi, thành phố lớn hay những nơi hoang sơ, bình yên? Thời gian bạn dự định đi là khi nào và bạn đã có ngân sách dự kiến chưa?
 >
 
 #### Final answer:
 ```
-Chào bạn! Du lịch là một trải nghiệm thật tuyệt vời! Có nhiều điểm đến thú vị ở Việt Nam như Hà Nội, Hồ Chí Minh, Đà Nẵng, Hội An, Phú Quốc… Bạn thích đi đâu? Có sở thích đặc biệt nào cho chuyến đi này không? Nếu bạn cho mình biết thêm thông tin như thời gian đi và ngân sách, mình sẽ giúp bạn tìm điểm đến phù hợp hơn nhé!
+Chào bạn! Đi du lịch thật là thú vị! Bạn có thể chia sẻ một chút về sở thích du lịch của mình không? Bạn thích biển, núi, thành phố lớn hay những nơi hoang sơ, bình yên? Thời gian bạn dự định đi là khi nào và bạn đã có ngân sách dự kiến chưa?
 ```
 
 ### Test 2 — Single Tool Call
@@ -58,23 +58,25 @@ Chuyến bay giữa Hà Nội và Đà Nẵng:
 
 >
 > **AI**: Chuyến bay giữa Hà Nội và Đà Nẵng:
+
 - **Vietnam Airlines (economy)**: 06:00 - 07:20, Giá: 1.450.000 VND
 - **Vietnam Airlines (business)**: 14:00 - 15:20, Giá: 2.800.000 VND
 - **VietJet Air (economy)**: 08:30 - 09:50, Giá: 890.000 VND
 - **Bamboo Airways (economy)**: 11:00 - 12:20, Giá: 1.200.000 VND
 
-Bạn cần thông tin gì thêm không?
+Nếu bạn cần thêm thông tin để đặt vé hoặc tìm kiếm khách sạn tại Đà Nẵng thì cứ cho mình biết nhé!
 >
 
 #### Final answer:
 ```
 Chuyến bay giữa Hà Nội và Đà Nẵng:
+
 - **Vietnam Airlines (economy)**: 06:00 - 07:20, Giá: 1.450.000 VND
 - **Vietnam Airlines (business)**: 14:00 - 15:20, Giá: 2.800.000 VND
 - **VietJet Air (economy)**: 08:30 - 09:50, Giá: 890.000 VND
 - **Bamboo Airways (economy)**: 11:00 - 12:20, Giá: 1.200.000 VND
 
-Bạn cần thông tin gì thêm không?
+Nếu bạn cần thêm thông tin để đặt vé hoặc tìm kiếm khách sạn tại Đà Nẵng thì cứ cho mình biết nhé!
 ```
 
 ### Test 3 — Multi-Step Tool Chaining
@@ -91,7 +93,7 @@ Bạn cần thông tin gì thêm không?
 >
 > **AI (Tool Call)**: `search_flights` với arguments: `{'origin': 'Hà Nội', 'destination': 'Phú Quốc'}`
 >
-> **AI (Tool Call)**: `search_hotels` với arguments: `{'city': 'Phú Quốc'}`
+> **AI (Tool Call)**: `search_hotels` với arguments: `{'city': 'Phú Quốc', 'max_price_per_night': 2500000}`
 >
 > **System (Tool Result)**:
 Chuyến bay giữa Hà Nội và Phú Quốc:
@@ -102,57 +104,42 @@ Chuyến bay giữa Hà Nội và Phú Quốc:
 >
 > **System (Tool Result)**:
 - 9Station Hostel (2*): 200,000 VNĐ/đêm - Rating: 4.5
-- Vinpearl Resort (5*): 3,500,000 VNĐ/đêm - Rating: 4.4
 - Sol by Meliá (4*): 1,500,000 VNĐ/đêm - Rating: 4.2
 - Lahana Resort (3*): 800,000 VNĐ/đêm - Rating: 4.0
 >
-> **AI (Tool Call)**: `calculate_budget` với arguments: `{'total_budget': 5000000, 'expenses': 'vé máy bay: 1350000, khách sạn: 4000000'}`
+> **AI (Tool Call)**: `calculate_budget` với arguments: `{'total_budget': 5000000, 'expenses': 'vé máy bay: 1100000, khách sạn: 800000'}`
 >
 > **System (Tool Result)**:
-Tổng chi: 5,350,000 VNĐ. Vượt ngân sách 350,000 VNĐ!
+Tổng chi: 1,900,000 VNĐ. Còn lại: 3,100,000 VNĐ
 >
-> **AI**: Chuyến bay: 
-- **VietJet Air (economy)**: 10:00 - 12:15, Giá: **1,350,000 VNĐ**
+> **AI**: Dưới đây là thông tin bạn cần cho chuyến đi từ Hà Nội đến Phú Quốc trong 2 đêm:
 
-Khách sạn:
-- **9Station Hostel (2*)**: 200,000 VNĐ/đêm, Rating: 4.5
-- **Sol by Meliá (4*)**: 1,500,000 VNĐ/đêm, Rating: 4.2
+**Chuyến bay:**
+- **VietJet Air (economy)**: 16:00 - 18:15, Giá: 1,100,000 VND
 
-Tính tổng chi phí:
-- Vé máy bay: 1,350,000 VNĐ
-- Khách sạn (2 đêm tại 9Station Hostel): 400,000 VNĐ
+**Khách sạn:**
+- **Lahana Resort (3*)**: 800,000 VNĐ/đêm. Rating: 4.0
 
-**Tổng chi: 1,750,000 VNĐ.** 
+**Tổng chi phí ước tính:** 1,900,000 VNĐ  
+**Còn lại:** 3,100,000 VNĐ
 
-Tuy nhiên, nếu bạn chọn Sol by Meliá thì tổng là **5,350,000 VNĐ**, vượt ngân sách của bạn 350,000 VNĐ.
-
-### Gợi ý:
-- Nếu bạn chỉ ở 2 đêm tại 9Station Hostel, tổng chi phí sẽ là 1,750,000 VNĐ, còn thừa lại 3,250,000 VNĐ cho các khoản chi tiêu khác. 
-
-Bạn đã có quyết định chưa? Hay cần thêm thông tin gì?
+Với ngân sách của bạn còn lại, bạn hoàn toàn có thể thưởng thức các hoạt động vui chơi và ăn uống tại Phú Quốc. Bạn muốn tìm thêm thông tin gì khác không?
 >
 
 #### Final answer:
 ```
-Chuyến bay: 
-- **VietJet Air (economy)**: 10:00 - 12:15, Giá: **1,350,000 VNĐ**
+Dưới đây là thông tin bạn cần cho chuyến đi từ Hà Nội đến Phú Quốc trong 2 đêm:
 
-Khách sạn:
-- **9Station Hostel (2*)**: 200,000 VNĐ/đêm, Rating: 4.5
-- **Sol by Meliá (4*)**: 1,500,000 VNĐ/đêm, Rating: 4.2
+**Chuyến bay:**
+- **VietJet Air (economy)**: 16:00 - 18:15, Giá: 1,100,000 VND
 
-Tính tổng chi phí:
-- Vé máy bay: 1,350,000 VNĐ
-- Khách sạn (2 đêm tại 9Station Hostel): 400,000 VNĐ
+**Khách sạn:**
+- **Lahana Resort (3*)**: 800,000 VNĐ/đêm. Rating: 4.0
 
-**Tổng chi: 1,750,000 VNĐ.** 
+**Tổng chi phí ước tính:** 1,900,000 VNĐ  
+**Còn lại:** 3,100,000 VNĐ
 
-Tuy nhiên, nếu bạn chọn Sol by Meliá thì tổng là **5,350,000 VNĐ**, vượt ngân sách của bạn 350,000 VNĐ.
-
-### Gợi ý:
-- Nếu bạn chỉ ở 2 đêm tại 9Station Hostel, tổng chi phí sẽ là 1,750,000 VNĐ, còn thừa lại 3,250,000 VNĐ cho các khoản chi tiêu khác. 
-
-Bạn đã có quyết định chưa? Hay cần thêm thông tin gì?
+Với ngân sách của bạn còn lại, bạn hoàn toàn có thể thưởng thức các hoạt động vui chơi và ăn uống tại Phú Quốc. Bạn muốn tìm thêm thông tin gì khác không?
 ```
 
 ### Test 4 — Missing Info / Clarification
@@ -167,24 +154,24 @@ Bạn đã có quyết định chưa? Hay cần thêm thông tin gì?
 #### Conversation Trace:
 > **User**: Tôi muốn đặt khách sạn
 >
-> **AI**: Chắc chắn rồi! Nhưng trước tiên, mình cần biết thêm một số thông tin để giúp bạn tốt hơn:
+> **AI**: Mình cần thêm một số thông tin để giúp bạn tìm khách sạn nhé! Bạn có thể cho mình biết:
 
-1. Bạn định đặt khách sạn ở thành phố nào?
-2. Bạn dự định ở lại bao lâu (số đêm)?
-3. Ngân sách của bạn cho mỗi đêm là bao nhiêu?
+1. Thành phố bạn muốn đặt khách sạn là gì?
+2. Bạn dự định ở lại bao nhiêu đêm?
+3. Ngân sách tối đa cho mỗi đêm là bao nhiêu?
 
-Cho mình biết nhé!
+Khi có đủ thông tin, mình sẽ giúp bạn tìm khách sạn phù hợp!
 >
 
 #### Final answer:
 ```
-Chắc chắn rồi! Nhưng trước tiên, mình cần biết thêm một số thông tin để giúp bạn tốt hơn:
+Mình cần thêm một số thông tin để giúp bạn tìm khách sạn nhé! Bạn có thể cho mình biết:
 
-1. Bạn định đặt khách sạn ở thành phố nào?
-2. Bạn dự định ở lại bao lâu (số đêm)?
-3. Ngân sách của bạn cho mỗi đêm là bao nhiêu?
+1. Thành phố bạn muốn đặt khách sạn là gì?
+2. Bạn dự định ở lại bao nhiêu đêm?
+3. Ngân sách tối đa cho mỗi đêm là bao nhiêu?
 
-Cho mình biết nhé!
+Khi có đủ thông tin, mình sẽ giúp bạn tìm khách sạn phù hợp!
 ```
 
 ### Test 5 — Guardrail / Refusal
@@ -197,12 +184,12 @@ Cho mình biết nhé!
 #### Conversation Trace:
 > **User**: Giải giúp tôi bài tập lập trình Python về linked list
 >
-> **AI**: Xin lỗi, mình không thể giúp bạn về các bài tập lập trình hay tài chính. Nhưng nếu bạn cần tư vấn về du lịch hoặc có kế hoạch cho chuyến đi, mình rất vui được hỗ trợ!
+> **AI**: Xin lỗi, nhưng mình chỉ có thể giúp bạn với các kế hoạch du lịch và thông tin liên quan đến du lịch. Nếu bạn cần tư vấn về chuyến đi hay địa điểm nào đó ở Việt Nam, hãy cho mình biết nhé!
 >
 
 #### Final answer:
 ```
-Xin lỗi, mình không thể giúp bạn về các bài tập lập trình hay tài chính. Nhưng nếu bạn cần tư vấn về du lịch hoặc có kế hoạch cho chuyến đi, mình rất vui được hỗ trợ!
+Xin lỗi, nhưng mình chỉ có thể giúp bạn với các kế hoạch du lịch và thông tin liên quan đến du lịch. Nếu bạn cần tư vấn về chuyến đi hay địa điểm nào đó ở Việt Nam, hãy cho mình biết nhé!
 ```
 
 ### Test 6 — No Flight Found
@@ -219,31 +206,40 @@ Xin lỗi, mình không thể giúp bạn về các bài tập lập trình hay 
 > **System (Tool Result)**:
 Không tìm thấy chuyến bay giữa Hải Phòng và Cần Thơ.
 >
-> **AI**: Chuyến bay: Không tìm thấy chuyến bay giữa Hải Phòng và Cần Thơ. 
+> **AI**: Chuyến bay: Rất tiếc, mình không tìm thấy chuyến bay nào giữa Hải Phòng và Cần Thơ. 
 
-Nếu bạn có thể, bạn có thể xem xét việc bay đến một thành phố khác như Hồ Chí Minh và sau đó di chuyển đến Cần Thơ bằng xe buýt hoặc tàu hỏa. Bạn có muốn mình tìm chuyến bay từ Hải Phòng đến Hồ Chí Minh không?
+Bạn có thể xem xét việc bay đến một điểm khác gần Cần Thơ như Hồ Chí Minh và sau đó di chuyển bằng xe hoặc tàu. Nếu bạn cần giúp đỡ thêm, hãy cho mình biết nhé!
 >
 
 #### Final answer:
 ```
-Chuyến bay: Không tìm thấy chuyến bay giữa Hải Phòng và Cần Thơ. 
+Chuyến bay: Rất tiếc, mình không tìm thấy chuyến bay nào giữa Hải Phòng và Cần Thơ. 
 
-Nếu bạn có thể, bạn có thể xem xét việc bay đến một thành phố khác như Hồ Chí Minh và sau đó di chuyển đến Cần Thơ bằng xe buýt hoặc tàu hỏa. Bạn có muốn mình tìm chuyến bay từ Hải Phòng đến Hồ Chí Minh không?
+Bạn có thể xem xét việc bay đến một điểm khác gần Cần Thơ như Hồ Chí Minh và sau đó di chuyển bằng xe hoặc tàu. Nếu bạn cần giúp đỡ thêm, hãy cho mình biết nhé!
 ```
 
 ### Test 7 — Invalid Budget Input
 - Prompt: Ngân sách 10 triệu, muốn mua vé bay 3 triệu, khách sạn 8 triệu. Tính phí xem nhé.
-- Status: FAIL
+- Status: PASS
 - Checks:
   - Checks that budget function fallback works even with initial invalid format
 
 #### Conversation Trace:
 > **User**: Ngân sách 10 triệu, muốn mua vé bay 3 triệu, khách sạn 8 triệu. Tính phí xem nhé.
 >
-> **AI**: Trước tiên, mình cần điểm đi và điểm đến để tìm chuyến bay. Bạn có thể cho mình biết bạn xuất phát từ đâu và muốn đến thành phố nào không?
+> **AI (Tool Call)**: `calculate_budget` với arguments: `{'total_budget': 10000000, 'expenses': 'vé máy bay: 3000000, khách sạn: 8000000'}`
+>
+> **System (Tool Result)**:
+Tổng chi: 11,000,000 VNĐ. Vượt ngân sách 1,000,000 VNĐ!
+>
+> **AI**: Tổng chi: 11,000,000 VNĐ. Vượt ngân sách 1,000,000 VNĐ! 
+
+Có thể bạn cần điều chỉnh ngân sách hoặc tìm một lựa chọn khác cho khách sạn hoặc vé máy bay. Nếu bạn cần giúp tìm kiếm chuyến bay hoặc khách sạn khác, cứ cho mình biết nhé!
 >
 
 #### Final answer:
 ```
-Trước tiên, mình cần điểm đi và điểm đến để tìm chuyến bay. Bạn có thể cho mình biết bạn xuất phát từ đâu và muốn đến thành phố nào không?
+Tổng chi: 11,000,000 VNĐ. Vượt ngân sách 1,000,000 VNĐ! 
+
+Có thể bạn cần điều chỉnh ngân sách hoặc tìm một lựa chọn khác cho khách sạn hoặc vé máy bay. Nếu bạn cần giúp tìm kiếm chuyến bay hoặc khách sạn khác, cứ cho mình biết nhé!
 ```
