@@ -8,6 +8,7 @@ from langchain_core.messages import SystemMessage
 from langgraph.graph import StateGraph, START, END, add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.checkpoint.memory import MemorySaver
+from langchain_core.runnables import RunnableConfig
 
 load_dotenv()
 
@@ -104,7 +105,7 @@ if __name__ == "__main__":
     print("=" * 60)
     
     # Generate a session config to keep memory across loop turns
-    config = {"configurable": {"thread_id": "travelbuddy_session_1"}}
+    config: RunnableConfig = {"configurable": {"thread_id": "travelbuddy_session_1"}}
     
     while True:
         try:
