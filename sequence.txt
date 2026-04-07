@@ -1,0 +1,47 @@
+======================================================
+HƯỚNG DẪN TEST TAY TERMINAL CHAT BOT TRAVELBUDDY
+======================================================
+
+Để bắt đầu test tay, hãy mở terminal (đã kích hoạt môi trường ảo - venv) và chạy lệnh:
+python agent.py
+
+Khi màn hình hiện dòng "Bạn:", hãy lần lượt copy/paste các câu hỏi dưới đây và quan sát phản hồi của Bot xem có giống kỳ vọng không nhé.
+
+---
+[TEST 1] - Đảm bảo Bot biết hỏi thăm lịch sự (Không gọi Tool)
+🗣️ Bạn nhập: Xin chào! Tôi đang muốn đi du lịch nhưng chưa biết đi đâu.
+✅ Kỳ vọng: Bot chào lại, hỏi thêm về sở thích, điểm đến dự kiến, số ngày hoặc ngân sách. KHÔNG in ra dòng [Tool Call].
+
+---
+[TEST 2] - Đảm bảo Bot biết tra chuyến bay (Single Tool Call)
+🗣️ Bạn nhập: Tìm giúp tôi chuyến bay từ Hà Nội đi Đà Nẵng
+✅ Kỳ vọng: Màn hình Terminal in ra dòng [Tool Call] search_flights. Bot trả về danh sách liệt kê các chuyến bay từ Hà Nội đi Đà Nẵng.
+
+---
+[TEST 3] - Đảm bảo Bot gọi nhiều Tool liên tiếp (Multi-Step Tool Chaining) 
+🗣️ Bạn nhập: Tôi ở Hà Nội, muốn đi Phú Quốc 2 đêm, budget 5 triệu. Tư vấn giúp!
+✅ Kỳ vọng: Màn hình Terminal in ra các dòng [Tool Call] liên tiếp: search_flights, search_hotels, calculate_budget. Sau đó Bot tóm tắt đầy đủ vé, phòng và tính số tiền còn lại hoặc vượt.
+
+---
+[TEST 4] - Đảm bảo Bot hỏi bù thông tin khách sạn thiếu (Missing Info)
+🗣️ Bạn nhập: Tôi muốn đặt khách sạn
+✅ Kỳ vọng: Bot không tự ý bịa thành phố. KHÔNG gọi Tool search_hotels ngay. Bot sẽ hỏi lại bạn: "Bạn muốn đi thành phố nào, ngân sách bao nhiêu..."
+
+---
+[TEST 5] - Đảm bảo Bot phòng vệ chủ đề ngoài lề (Guardrail)
+🗣️ Bạn nhập: Giải giúp tôi bài tập lập trình Python về linked list
+✅ Kỳ vọng: Bot khéo léo từ chối hỗ trợ lập trình/toán học, nhắc nhở định hướng người dùng quay lại chủ đề du lịch. 
+
+---
+[TEST 6] - Đảm bảo Bot phản hồi tốt khi Tool không có dữ liệu (No Flight)
+🗣️ Bạn nhập: Hãy tìm cho tôi vé máy bay từ Hải Phòng vào Cần Thơ.
+✅ Kỳ vọng: Màn hình hiện [Tool Call] search_flights. Bot xin lỗi vì không có đường bay trực tiếp này trong dữ liệu hệ thống (mock DB). Không được tự bịa ra vé.
+
+---
+[TEST 7] - Đảm bảo Bot vẫn tính toán ngân sách tốt (Complex/Invalid Math Input)
+🗣️ Bạn nhập: Ngân sách 10 triệu, muốn mua vé bay 3 triệu, khách sạn 8 triệu. Tính phí xem nhé.
+✅ Kỳ vọng: In ra dòng [Tool Call] calculate_budget. Bot báo là "Tổng chi:" là 11 triệu, "Vượt ngân sách" 1 triệu.
+
+---
+Để thoát chương trình lúc đang chat:
+🗣️ Bạn nhập: quit (hoặc exit / q)
