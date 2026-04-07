@@ -7,6 +7,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
 from langgraph.graph import StateGraph, START, END, add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.checkpoint.memory import MemorySaver
 
 load_dotenv()
 
@@ -32,7 +33,7 @@ def get_model() -> ChatOpenAI:
     if github_pat:
         print("--- Using GitHub PAT ---")
         return ChatOpenAI(
-            model="gpt-4o-mini",
+            model="gpt-4.1",
             api_key=SecretStr(github_pat),
             base_url="https://models.inference.ai.azure.com"
         )
@@ -71,7 +72,7 @@ def agent_node(state: AgentState) -> dict:
                 args = tc.get("args") if isinstance(tc, dict) else getattr(tc, "args", None)
                 print(f"[Tool Call] {name} with args {args}")
         else:
-            print("[No Tool Call] Agent response without tool usage \n")
+            print("[No Tool Call] Agent responded")
             
         return {"messages": [response]}
     except Exception as error:
@@ -92,7 +93,8 @@ builder.add_conditional_edges("agent", tools_condition)
 builder.add_edge("tools", "agent")  # Always return to the agent after executing a tool so it can summarize
 
 # Compile the final executable graph
-graph = builder.compile()
+memory = MemorySaver()
+graph = builder.compile(checkpointer=memory)
 
 # 6. Chat loop
 if __name__ == "__main__":
@@ -100,6 +102,9 @@ if __name__ == "__main__":
     print("TravelBuddy — Trợ lý Du lịch Thông minh")
     print(" Gõ 'quit' để thoát")
     print("=" * 60)
+    
+    # Generate a session config to keep memory across loop turns
+    config = {"configurable": {"thread_id": "travelbuddy_session_1"}}
     
     while True:
         try:
@@ -109,8 +114,8 @@ if __name__ == "__main__":
             
             print("\nTravelBuddy đang suy nghĩ...")
             
-            # Start our LangGraph execution
-            result = graph.invoke({"messages": [("human", user_input)]})
+            # Start our LangGraph execution with the thread config
+            result = graph.invoke({"messages": [("human", user_input)]}, config=config)
             
             # Retrieve and print final response from our message trace
             final = result["messages"][-1]

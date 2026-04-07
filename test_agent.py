@@ -76,7 +76,11 @@ def _count_flight_lines(messages: list[Any]) -> int:
 
 def run_case(name: str, prompt: str) -> CaseResult:
 	try:
-		result = graph.invoke({"messages": [("human", prompt)]})
+		import uuid
+		unique_thread_id = str(uuid.uuid4())
+		config = {"configurable": {"thread_id": unique_thread_id}}
+		
+		result = graph.invoke({"messages": [("human", prompt)]}, config=config)
 		tools_called, tool_calls, final_answer, chat_log = _extract_tools_and_answer(result)
 		messages = result.get("messages", [])
 
